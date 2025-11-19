@@ -1,16 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>simom1 - XAUUSD 多周期回测系统</title>
-  <style>body{font-family:Arial;margin:40px;line-height:1.6;} a{color:#0070f3;}</style>
+  <style>
+    body {font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; background: #f8f9fa; color: #333;}
+    a {color: #0070f3; text-decoration: none;}
+    a:hover {text-decoration: underline;}
+    .price-card {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #ffd700;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 500px;
+      margin: 30px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .price {font-size: 3.5em; font-weight: bold; margin: 10px 0;}
+    .change {font-size: 1.5em;}
+    .up {color: #00ff9d;}
+    .down {color: #ff3b5c;}
+    small {color: #aaa;}
+  </style>
 </head>
 <body>
+
   <h1>XAUUSD 多周期回测系统</h1>
   <p>黄金多周期策略回测框架，支持 MT5 数据，自定义策略快速验证。</p>
   <p><a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">→ GitHub 开源地址</a></p>
   <p><a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">→ 中文文档</a></p>
+
+  <!-- 实时金价卡片 -->
+  <div class="price-card">
+    <h3>实时黄金价格 XAU/USD</h3>
+    <div class="price" id="goldPrice">$----.--</div>
+    <div class="change" id="change">↑ --.--</div>
+    <small>Yahoo Finance • 1秒更新</small>
+  </div>
+
   <hr>
-  <small>Powered by Vercel • 2025</small>
+  <small>Powered by Netlify • 2025</small>
+
+  <script>
+    let lastPrice = 0;
+    function updateGold() {
+      fetch('https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X')
+        .then(r => r.json())
+        .then(data => {
+          const price = data.chart.result[0].meta.regularMarketPrice;
+          document.getElementById('goldPrice').textContent = '$' + price.toFixed(2);
+
+          // 计算涨跌
+          if (lastPrice !== 0) {
+            const diff = price - lastPrice;
+            const arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '→';
+            const changeEl = document.getElementById('change');
+            changeEl.textContent = arrow + ' ' + Math.abs(diff).toFixed(2);
+            changeEl.className = 'change ' + (diff > 0 ? 'up' : diff < 0 ? 'down' : '');
+          }
+          lastPrice = price;
+        })
+        .catch(() => {});
+    }
+
+    updateGold();
+    setInterval(updateGold, 1000);   // 1秒刷新一次
+  </script>
 </body>
 </html>
