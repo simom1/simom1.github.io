@@ -5,62 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>simom1 - XAUUSD 多周期回测系统</title>
   <style>
-    body {font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; background: #f8f9fa; color: #333;}
-    a {color: #0070f3; text-decoration: none;}
-    a:hover {text-decoration: underline;}
+    body {font-family:Arial;margin:40px;background:#f8f9fa;color:#333;line-height:1.6;}
+    a{color:#0070f3;}
     .price-card {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      color: #ffd700;
-      padding: 25px;
-      border-radius: 16px;
-      text-align: center;
-      max-width: 600px;
-      margin: 30px auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      background:linear-gradient(135deg,#1e3c72,#2a5298);
+      color:#ffd700;padding:30px;border-radius:16px;text-align:center;
+      max-width:500px;margin:30px auto;box-shadow:0 10px 30px rgba(0,0,0,0.3);
     }
-    #tradingview-widget {height: 400px !important; width: 100%;}
-    small {color: #aaa;}
+    .price {font-size:3.8em;font-weight:bold;margin:10px 0;}
+    .up{color:#00ff9d;} .down{color:#ff3b5c;}
   </style>
 </head>
 <body>
 
   <h1>XAUUSD 多周期回测系统</h1>
   <p>黄金多周期策略回测框架，支持 MT5 数据，自定义策略快速验证。</p>
-  <p><a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">→ GitHub 开源地址</a></p>
-  <p><a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">→ 中文文档</a></p>
+  <p><a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">GitHub 开源地址</a></p>
+  <p><a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">中文文档</a></p>
 
-  <!-- TradingView 高级图表 -->
   <div class="price-card">
     <h3>实时黄金价格 XAU/USD</h3>
-    <div id="tradingview-widget"></div>
-    <small>TradingView • 实时更新</small>
+    <div class="price" id="price">加载中...</div>
+    <div style="font-size:1.5em;" id="change"></div>
+    <small>金十数据 • 1秒更新</small>
   </div>
 
-  <hr>
-  <small>Powered by Netlify • 2025</small>
+  <hr><small>Powered by Netlify • 2025</small>
 
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-    "width": "100%",
-    "height": 400,
-    "symbol": "FX:XAUUSD",
-    "interval": "1",
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "zh_CN",
-    "toolbar_bg": "#f1f3f6",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_legend": false,
-    "save_image": false,
-    "container_id": "tradingview-widget",
-    "showRealtime": true,
-    "autosize": true
-  }
-  );
+  <script>
+    let last = 0;
+    function update() {
+      fetch('https://cdn.jsdelivr.net/gh/ziyan-cao/currency-api@xau/main/xau.json')
+        .then(r => r.json())
+        .then(d => {
+          const price = d.xauusd;
+          document.getElementById('price').textContent = '$' + price.toFixed(2);
+          
+          if(last !== 0){
+            const diff = price - last;
+            const el = document.getElementById('change');
+            el.textContent = (diff>0?'↑ ':'↓ ') + Math.abs(diff).toFixed(2);
+            el.className = diff>0 ? 'up' : 'down';
+          }
+          last = price;
+        });
+    }
+    update();
+    setInterval(update, 1000);  // 1秒刷新
   </script>
 </body>
 </html>
