@@ -14,16 +14,12 @@
       padding: 25px;
       border-radius: 16px;
       text-align: center;
-      max-width: 500px;
+      max-width: 600px;
       margin: 30px auto;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    .price {font-size: 3.5em; font-weight: bold; margin: 10px 0;}
-    .change {font-size: 1.5em;}
-    .up {color: #00ff9d;}
-    .down {color: #ff3b5c;}
+    #tradingview-widget {height: 400px !important; width: 100%;}
     small {color: #aaa;}
-    #tradingview-widget {margin: 20px auto; max-width: 100%;}
   </style>
 </head>
 <body>
@@ -33,7 +29,7 @@
   <p><a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">→ GitHub 开源地址</a></p>
   <p><a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">→ 中文文档</a></p>
 
-  <!-- TradingView 小型图表 -->
+  <!-- TradingView 高级图表 -->
   <div class="price-card">
     <h3>实时黄金价格 XAU/USD</h3>
     <div id="tradingview-widget"></div>
@@ -47,8 +43,8 @@
   <script type="text/javascript">
   new TradingView.widget(
   {
-    "width": 500,
-    "height": 200,
+    "width": "100%",
+    "height": 400,
     "symbol": "FX:XAUUSD",
     "interval": "1",
     "timezone": "Etc/UTC",
@@ -60,7 +56,9 @@
     "hide_top_toolbar": false,
     "hide_legend": false,
     "save_image": false,
-    "container_id": "tradingview-widget"
+    "container_id": "tradingview-widget",
+    "showRealtime": true,
+    "autosize": true
   }
   );
   </script>
