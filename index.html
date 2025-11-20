@@ -17,6 +17,7 @@
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      position: relative;
     }
     
     a {
@@ -26,11 +27,6 @@
     
     a:hover {
       text-decoration: underline;
-    }
-    
-    h1 {
-      color: #DBDBDB;
-      margin-bottom: 20px;
     }
     
     .header-section {
@@ -72,48 +68,24 @@
       text-decoration: none;
     }
     
-    /* TradingView 市场行情容器 */
-    .market-section {
-      background: #161616;
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .market-section h2 {
-      color: #ffd700;
-      margin: 0 0 25px 0;
-      font-size: 1.5em;
-      text-align: center;
-    }
-    
-    .status-badge {
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 20px;
-      font-size: 0.85em;
-      margin-bottom: 20px;
-      background: #22ab94;
-      color: #000;
-      font-weight: bold;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    /* 右上角黄金价格 */
+    .gold-price-widget {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      overflow: hidden;
     }
     
     .tradingview-widget-container {
-      width: 100%;
-      max-width: 550px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      margin: 0;
+    }
+    
+    .tradingview-widget-copyright {
+      display: none !important;
     }
     
     .footer {
@@ -135,18 +107,34 @@
         padding: 20px;
       }
       
-      .market-section {
-        padding: 20px;
-      }
-      
-      .tradingview-widget-container {
-        max-width: 100%;
+      .gold-price-widget {
+        position: static;
+        margin: 0 auto 20px;
+        width: fit-content;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- 右上角黄金价格 -->
+    <div class="gold-price-widget">
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+        {
+          "symbol": "OANDA:XAUUSD",
+          "colorTheme": "light",
+          "isTransparent": false,
+          "locale": "zh_CN",
+          "width": 350
+        }
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
+    </div>
+
     <!-- 头部信息 -->
     <div class="header-section">
       <h1>📊 XAUUSD 多周期回测系统</h1>
@@ -157,135 +145,11 @@
       </div>
     </div>
 
-    <!-- TradingView 市场行情 -->
-    <div class="market-section">
-      <span class="status-badge">● 实时数据</span>
-      <h2>🌐 全球市场实时行情</h2>
-      
-      <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright">
-          <a href="https://cn.tradingview.com/markets/" rel="noopener nofollow" target="_blank">
-            <span class="blue-text">Track all markets on TradingView</span>
-          </a>
-        </div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
-        {
-          "colorTheme": "dark",
-          "locale": "zh_CN",
-          "largeChartUrl": "",
-          "isTransparent": false,
-          "showSymbolLogo": false,
-          "backgroundColor": "#0F0F0F",
-          "support_host": "https://www.tradingview.com",
-          "width": 550,
-          "height": 550,
-          "symbolsGroups": [
-            {
-              "name": "Indices",
-              "symbols": [
-                {
-                  "name": "FOREXCOM:SPXUSD",
-                  "displayName": "S&P 500 Index"
-                },
-                {
-                  "name": "FOREXCOM:NSXUSD",
-                  "displayName": "US 100 Cash CFD"
-                },
-                {
-                  "name": "FOREXCOM:DJI",
-                  "displayName": "Dow Jones Industrial Average Index"
-                },
-                {
-                  "name": "INDEX:NKY",
-                  "displayName": "Japan 225"
-                },
-                {
-                  "name": "INDEX:DEU40",
-                  "displayName": "DAX Index"
-                },
-                {
-                  "name": "FOREXCOM:UKXGBP",
-                  "displayName": "FTSE 100 Index"
-                }
-              ]
-            },
-            {
-              "name": "Futures",
-              "symbols": [
-                {
-                  "name": "BMFBOVESPA:ISP1!",
-                  "displayName": "S&P 500"
-                },
-                {
-                  "name": "BMFBOVESPA:EUR1!",
-                  "displayName": "Euro"
-                },
-                {
-                  "name": "CMCMARKETS:GOLD",
-                  "displayName": "Gold"
-                },
-                {
-                  "name": "PYTH:WTI3!",
-                  "displayName": "WTI Crude Oil"
-                },
-                {
-                  "name": "BMFBOVESPA:CCM1!",
-                  "displayName": "Corn"
-                }
-              ]
-            },
-            {
-              "name": "Forex",
-              "symbols": [
-                {
-                  "name": "FX:EURUSD",
-                  "displayName": "EUR to USD"
-                },
-                {
-                  "name": "FX:GBPUSD",
-                  "displayName": "GBP to USD"
-                },
-                {
-                  "name": "FX:USDJPY",
-                  "displayName": "USD to JPY"
-                },
-                {
-                  "name": "FX:USDCHF",
-                  "displayName": "USD to CHF"
-                },
-                {
-                  "name": "FX:AUDUSD",
-                  "displayName": "AUD to USD"
-                },
-                {
-                  "name": "FX:USDCAD",
-                  "displayName": "USD to CAD"
-                }
-              ]
-            }
-          ]
-        }
-        </script>
-      </div>
-      <!-- TradingView Widget END -->
-    </div>
-
     <!-- 页脚 -->
     <div class="footer">
       <p>Powered by TradingView & GitHub Pages • 2025</p>
-      <p>实时市场数据 • 24小时不间断 • 包含黄金、股指、外汇等品种</p>
+      <p>实时黄金价格 XAU/USD • 自动更新</p>
     </div>
   </div>
-
-  <script>
-    // 页面加载完成提示
-    window.addEventListener('load', function() {
-      console.log('📊 XAUUSD 回测系统已加载');
-      console.log('💡 TradingView 提供实时市场数据');
-      console.log('📈 包含黄金(Gold)在 Futures 分类中');
-    });
-  </script>
 </body>
 </html>
