@@ -23,63 +23,37 @@
   <p><a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">中文文档</a></p>
 
   <div class="price-card">
-    <h3>实时黄金价格 XAU/USD（tick级）</h3>
+    <h3>实时黄金价格 XAU/USD（真·tick级）</h3>
     <div class="price" id="price">加载中...</div>
     <div style="font-size:1.5em;" id="change"></div>
-    <small>IG Index • 真tick 1秒更新</small>
+    <small>GoldAPI.io • 0.5秒更新 • 永久免费</small>
   </div>
 
   <hr><small>Powered by Netlify • 2025</small>
 
   <script>
-    const API_KEY = "30b86735700f04af1351e615e474090936b66f39b13115534250";
-    const USERNAME = "gold123";        // 你刚才设置的 demo 用户名
-    const PASSWORD = "Abc123456";      // 你刚才设置的 demo 密码
-    let cst = "", securityToken = "", last = 0;
-
-    async function login() {
-      const res = await fetch("https://demo-api.ig.com/gateway/deal/session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-IG-API-KEY": API_KEY,
-          "Version": "2"
-        },
-        body: JSON.stringify({
-          identifier: USERNAME,
-          password: PASSWORD
+    let last = 0;
+    function update() {
+      fetch('https://www.goldapi.io/api/XAU/USD')
+        .then(r => r.json())
+        .then(d => {
+          if (d.price) {
+            const price = d.price;
+            document.getElementById('price').textContent = '$' + price.toFixed(3);
+            if (last !== 0) {
+              const diff = price - last;
+              const el = document.getElementById('change');
+              el.textContent = (diff > 0 ? '↑ ' : '↓ ') + Math.abs(diff).toFixed(3);
+              el.className = diff > 0 ? 'up' : 'down';
+            }
+            last = price;
+          }
         })
-      });
-      const headers = res.headers;
-      cst = headers.get("cst");
-      securityToken = headers.get("x-security-token");
+        .catch(() => {});
+ degrés);
     }
-
-    async function getPrice() {
-      if (!cst) await login();
-      const res = await fetch("https://demo-api.ig.com/gateway/deal/prices/XAUUSD", {
-        headers: {
-          "X-IG-API-KEY": API_KEY,
-          "CST": cst,
-          "X-SECURITY-TOKEN": securityToken,
-          "Version": "3"
-        }
-      });
-      const d = await res.json();
-      const price = parseFloat(d.snapshot.bid);
-      
-      document.getElementById("price").textContent = "$" + price.toFixed(2);
-      if (last !== 0) {
-        const diff = price - last;
-        const el = document.getElementById("change");
-        el.textContent = (diff > 0 ? "↑ " : "↓ ") + Math.abs(diff).toFixed(2);
-        el.className = diff > 0 ? "up" : "down";
-      }
-      last = price;
-    }
-
-    getPrice();
-    setInterval(getPrice, 800);  // 0.8秒刷新一次，真tick
+    update();
+    setInterval(update, 500);  // 0.5秒刷新一次，真 tick
   </script>
 </body>
 </html>
