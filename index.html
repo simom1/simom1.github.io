@@ -13,22 +13,14 @@
       color: #DBDBDB;
       line-height: 1.6;
     }
-    
     .container {
       max-width: 1200px;
       margin: 0 auto;
       position: relative;
     }
-    
-    a {
-      color: #22ab94;
-      text-decoration: none;
-    }
-    
-    a:hover {
-      text-decoration: underline;
-    }
-    
+    a { color: #22ab94; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
     .header-section {
       background: linear-gradient(135deg, #1e3c72, #2a5298);
       padding: 30px;
@@ -36,21 +28,10 @@
       margin-bottom: 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    
-    .header-section h1 {
-      color: #ffd700;
-      margin: 0 0 15px 0;
-    }
-    
-    .header-section p {
-      margin: 10px 0;
-      color: #fff;
-    }
-    
-    .links {
-      margin-top: 20px;
-    }
-    
+    .header-section h1 { color: #ffd700; margin: 0 0 15px 0; }
+    .header-section p { margin: 10px 0; color: #fff; }
+
+    .links { margin-top: 20px; }
     .links a {
       display: inline-block;
       background: rgba(255,255,255,0.1);
@@ -61,24 +42,31 @@
       color: #ffd700;
       transition: all 0.3s;
     }
-    
     .links a:hover {
       background: rgba(255,255,255,0.2);
       transform: translateY(-2px);
       text-decoration: none;
     }
-    
-    /* 右上角黄金价格 */
+
+    /* 手机端留出大空间 + 固定底部显示 */
     .gold-price-widget {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 1000;
+      width: 350px;
+      max-width: 96vw;
       border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
       overflow: hidden;
     }
-    
+
+    /* 给页面底部留白，避免内容被遮挡 */
+    .page-bottom-padding {
+      height: 120px;
+    }
+
     .footer {
       text-align: center;
       margin-top: 40px;
@@ -87,40 +75,40 @@
       color: rgba(255,255,255,0.5);
       font-size: 0.9em;
     }
-    
-    /* 响应式设计 */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-      
-      .header-section {
-        padding: 20px;
-      }
-      
+
+    @media (min-width: 769px) {
       .gold-price-widget {
-        position: static;
-        margin: 0 auto 20px;
-        width: fit-content;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        bottom: auto;
+        left: auto;
+        transform: none;
       }
+      .page-bottom-padding { height: 0; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 右上角黄金价格 -->
+
+    <!-- 黄金价格组件（桌面右上，手机固定底部） -->
     <div class="gold-price-widget">
       <!-- TradingView Widget BEGIN -->
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/XAUUSD/?exchange=OANDA" rel="noopener nofollow" target="_blank"><span class="blue-text">XAUUSD quote</span></a><span class="trademark"> by TradingView</span></div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://cn.tradingview.com/symbols/XAUUSD/?exchange=OANDA" rel="noopener nofollow" target="_blank">
+            <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+        </div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
         {
           "symbol": "OANDA:XAUUSD",
           "colorTheme": "light",
           "isTransparent": false,
-          "locale": "en",
-          "width": 350
+          "locale": "zh_CN",
+          "width": "100%"
         }
         </script>
       </div>
@@ -136,6 +124,9 @@
         <a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">📖 中文文档</a>
       </div>
     </div>
+
+    <!-- 底部留白，防止手机端内容被价格组件遮挡 -->
+    <div class="page-bottom-padding"></div>
 
     <!-- 页脚 -->
     <div class="footer">
