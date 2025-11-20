@@ -14,73 +14,76 @@
     .header-section p{margin:10px 0;color:#fff;}
     .links a{display:inline-block;background:rgba(255,255,255,0.1);padding:10px 20px;border-radius:8px;margin:5px;color:#ffd700;}
     .links a:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px);}
-    
-    /* 完美手机+电脑固定价格条 */
-    .gold-bar {
+
+    /* 关键修复：手机端固定底部 + 桌面右上角 */
+    .tv-widget-wrapper {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(90deg, #1a1a2e, #16213e);
-      color: #ffd700;
-      padding: 12px 0;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(10px);
       z-index: 9999;
-      border-top: 2px solid #ffd700;
+      padding: 8px 0;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.6);
+      border-top: 1px solid #333;
     }
-    .price {font-size: 2.2em;margin:0 10px;}
-    .change {font-size: 1.4em;}
-    .up {color:#00ff9d;}
-    .down {color:#ff3b5c;}
-    .footer {padding-bottom:80px;} /* 防止内容被挡 */
-    @media (min-width:769px){
-      .gold-bar {bottom:20px;left:auto;right:20px;width:auto;padding:15px 25px;border-radius:16px;}
+    .tradingview-widget-container {width:100% !important;}
+    .tradingview-widget-container__widget {height:70px !important;}
+
+    .page-padding {padding-bottom:100px;} /* 防止内容被挡住 */
+
+    @media (min-width: 769px) {
+      .tv-widget-wrapper {
+        top: 20px;
+        right: 20px;
+        bottom: auto;
+        left: auto;
+        width: 380px;
+        padding: 0;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      }
+      .tradingview-widget-container__widget {height:120px !important;}
+      .page-padding {padding-bottom:0;}
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container page-padding">
     <div class="header-section">
       <h1>XAUUSD 多周期回测系统</h1>
-      <p>黄金多周期策略回回测框架，支持 MT5 数据，自定义策略快速验证</p>
+      <p>黄金多周期策略回测框架，支持 MT5 数据，自定义策略快速验证</p>
       <div class="links">
         <a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">GitHub 开源地址</a>
         <a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">中文文档</a>
       </div>
     </div>
-    <div class="footer">
-      <p>Powered by GitHub Pages • 2025</p>
+  </div>
+
+  <!-- 保留原装 TradingView 组件 + 完美手机适配 -->
+  <div class="tv-widget-wrapper">
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <div class="tradingview-widget-copyright">
+        <a href="https://cn.tradingview.com/symbols/XAUUSD/" rel="noopener nofollow" target="_blank">
+          <span class="blue-text">XAUUSD 实时报价 by TradingView</span>
+        </a>
+      </div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+      {
+        "symbol": "OANDA:XAUUSD",
+        "width": "100%",
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "locale": "zh_CN"
+      }
+      </script>
     </div>
+    <!-- TradingView Widget END -->
   </div>
 
-  <!-- 永不失灵的黄金价格条（手机电脑全兼容） -->
-  <div class="gold-bar">
-    <div>实时黄金 XAU/USD</div>
-    <div class="price" id="price">加载中...</div>
-    <div class="change" id="change"></div>
-  </div>
-
-  <script>
-    let last = 0;
-    function update() {
-      fetch('https://gold.168188.xyz/xau')
-        .then(r => r.json())
-        .then(d => {
-          const price = d.price;
-          document.getElementById('price').textContent = '$' + price.toFixed(3);
-          if(last !== 0){
-            const diff = price - last;
-            const el = document.getElementById('change');
-            el.textContent = (diff>0?'Up ':'Down ') + Math.abs(diff).toFixed(3);
-            el.className = diff>0 ? 'up' : 'down';
-          }
-          last = price;
-        });
-    }
-    update();
-    setInterval(update, 400);
-  </script>
 </body>
 </html>
