@@ -14,13 +14,11 @@
     .header-section p{margin:10px 0;color:#fff;}
     .links a{display:inline-block;background:rgba(255,255,255,0.1);padding:10px 20px;border-radius:8px;margin:5px;color:#ffd700;}
     .links a:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px);}
-
-    /* 关键修复：手机端固定底部 + 桌面右上角 */
+    
+    /* 固定底部（手机）+ 右上角（桌面） */
     .tv-widget-wrapper {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      bottom: 0; left: 0; width: 100%;
       background: rgba(0,0,0,0.95);
       backdrop-filter: blur(10px);
       z-index: 9999;
@@ -28,24 +26,18 @@
       box-shadow: 0 -5px 20px rgba(0,0,0,0.6);
       border-top: 1px solid #333;
     }
-    .tradingview-widget-container {width:100% !important;}
-    .tradingview-widget-container__widget {height:70px !important;}
-
-    .page-padding {padding-bottom:100px;} /* 防止内容被挡住 */
+    .tradingview-widget-container {width:100% !important; height:100% !important;}
+    .tradingview-widget-container__widget {height: 500px !important;} /* 多周期图表高度 */
+    .page-padding {padding-bottom:120px;} /* 防止内容被遮挡 */
 
     @media (min-width: 769px) {
       .tv-widget-wrapper {
-        top: 20px;
-        right: 20px;
-        bottom: auto;
-        left: auto;
-        width: 380px;
-        padding: 0;
-        border-radius: 16px;
-        overflow: hidden;
+        top: 20px; right: 20px; bottom: auto; left: auto;
+        width: 420px; height: 560px;
+        padding: 0; border-radius: 16px; overflow: hidden;
         box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       }
-      .tradingview-widget-container__widget {height:120px !important;}
+      .tradingview-widget-container__widget {height: 560px !important;}
       .page-padding {padding-bottom:0;}
     }
   </style>
@@ -62,28 +54,57 @@
     </div>
   </div>
 
-  <!-- 保留原装 TradingView 组件 + 完美手机适配 -->
+  <!-- 多周期 Symbol Overview 图表（固定底部/右上角） -->
   <div class="tv-widget-wrapper">
     <!-- TradingView Widget BEGIN -->
     <div class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget"></div>
       <div class="tradingview-widget-copyright">
-        <a href="https://cn.tradingview.com/symbols/XAUUSD/" rel="noopener nofollow" target="_blank">
-          <span class="blue-text">XAUUSD 实时报价 by TradingView</span>
-        </a>
+        <a href="https://www.tradingview.com/symbols/XAUUSD/?exchange=OANDA" rel="noopener nofollow" target="_blank">
+          <span class="blue-text">XAUUSD 多周期图表</span>
+        </a> by TradingView
       </div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
       {
-        "symbol": "OANDA:XAUUSD",
-        "width": "100%",
+        "lineWidth": 2,
+        "lineType": 0,
+        "chartType": "area",
+        "fontColor": "#6A6D78",
+        "gridLineColor": "rgba(46,46,46,0.06)",
+        "volumeUpColor": "rgba(34,171,148,0.5)",
+        "volumeDownColor": "rgba(247,82,95,0.5)",
+        "backgroundColor": "rgba(15,15,15,0.95)",
+        "widgetFontColor": "#DBDBDB",
+        "upColor": "#22ab94",
+        "downColor": "#f7525f",
+        "borderUpColor": "#22ab94",
+        "borderDownColor": "#f7525f",
+        "wickUpColor": "#22ab94",
+        "wickDownColor": "#f7525f",
         "colorTheme": "dark",
         "isTransparent": true,
-        "locale": "zh_CN"
+        "locale": "zh_CN",
+        "chartOnly": false,
+        "scalePosition": "right",
+        "scaleMode": "Normal",
+        "fontFamily": "-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif",
+        "valuesTracking": "1",
+        "changeMode": "price-and-percent",
+        "symbols": [["OANDA:XAUUSD|1D"]],
+        "dateRanges": ["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],
+        "fontSize": "12",
+        "headerFontSize": "medium",
+        "autosize": true,
+        "width": "100%",
+        "height": "100%",
+        "noTimeScale": false,
+        "hideDateRanges": false,
+        "hideMarketStatus": false,
+        "hideSymbolLogo": false
       }
       </script>
     </div>
     <!-- TradingView Widget END -->
   </div>
-
 </body>
 </html>
