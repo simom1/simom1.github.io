@@ -5,134 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>simom1 - XAUUSD 多周期回测系统</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #0F0F0F;
-      color: #DBDBDB;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-    }
-    a { color: #22ab94; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .header-section {
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      padding: 30px;
-      border-radius: 16px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .header-section h1 { color: #ffd700; margin: 0 0 15px 0; }
-    .header-section p { margin: 10px 0; color: #fff; }
-
-    .links { margin-top: 20px; }
-    .links a {
-      display: inline-block;
-      background: rgba(255,255,255,0.1);
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin-right: 10px;
-      margin-bottom: 10px;
-      color: #ffd700;
-      transition: all 0.3s;
-    }
-    .links a:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-2px);
-      text-decoration: none;
-    }
-
-    /* 手机端留出大空间 + 固定底部显示 */
-    .gold-price-widget {
+    body {font-family:Arial,sans-serif;margin:0;padding:20px;background:#0F0F0F;color:#DBDBDB;line-height:1.6;}
+    .container {max-width:1200px;margin:0 auto;position:relative;}
+    a{color:#22ab94;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    .header-section{background:linear-gradient(135deg,#1e3c72,#2a5298);padding:30px;border-radius:16px;margin-bottom:30px;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+    .header-section h1{color:#ffd700;margin:0 0 15px 0;}
+    .header-section p{margin:10px 0;color:#fff;}
+    .links a{display:inline-block;background:rgba(255,255,255,0.1);padding:10px 20px;border-radius:8px;margin:5px;color:#ffd700;}
+    .links a:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px);}
+    
+    /* 完美手机+电脑固定价格条 */
+    .gold-bar {
       position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      width: 350px;
-      max-width: 96vw;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-      overflow: hidden;
-    }
-
-    /* 给页面底部留白，避免内容被遮挡 */
-    .page-bottom-padding {
-      height: 120px;
-    }
-
-    .footer {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #1a1a2e, #16213e);
+      color: #ffd700;
+      padding: 12px 0;
       text-align: center;
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5);
-      font-size: 0.9em;
+      font-weight: bold;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+      z-index: 9999;
+      border-top: 2px solid #ffd700;
     }
-
-    @media (min-width: 769px) {
-      .gold-price-widget {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        bottom: auto;
-        left: auto;
-        transform: none;
-      }
-      .page-bottom-padding { height: 0; }
+    .price {font-size: 2.2em;margin:0 10px;}
+    .change {font-size: 1.4em;}
+    .up {color:#00ff9d;}
+    .down {color:#ff3b5c;}
+    .footer {padding-bottom:80px;} /* 防止内容被挡 */
+    @media (min-width:769px){
+      .gold-bar {bottom:20px;left:auto;right:20px;width:auto;padding:15px 25px;border-radius:16px;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-
-    <!-- 黄金价格组件（桌面右上，手机固定底部） -->
-    <div class="gold-price-widget">
-      <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright">
-          <a href="https://cn.tradingview.com/symbols/XAUUSD/?exchange=OANDA" rel="noopener nofollow" target="_blank">
-            <span class="blue-text">Track all markets on TradingView</span>
-          </a>
-        </div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-        {
-          "symbol": "OANDA:XAUUSD",
-          "colorTheme": "light",
-          "isTransparent": false,
-          "locale": "zh_CN",
-          "width": "100%"
-        }
-        </script>
-      </div>
-      <!-- TradingView Widget END -->
-    </div>
-
-    <!-- 头部信息 -->
     <div class="header-section">
-      <h1>📊 XAUUSD 多周期回测系统</h1>
-      <p>黄金多周期策略回测框架，支持 MT5 数据，自定义策略快速验证</p>
+      <h1>XAUUSD 多周期回测系统</h1>
+      <p>黄金多周期策略回回测框架，支持 MT5 数据，自定义策略快速验证</p>
       <div class="links">
-        <a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">🔗 GitHub 开源地址</a>
-        <a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">📖 中文文档</a>
+        <a href="https://github.com/simom1/XAUUSD-Backtest" target="_blank">GitHub 开源地址</a>
+        <a href="https://github.com/simom1/XAUUSD-Backtest/blob/main/README_CN.md" target="_blank">中文文档</a>
       </div>
     </div>
-
-    <!-- 底部留白，防止手机端内容被价格组件遮挡 -->
-    <div class="page-bottom-padding"></div>
-
-    <!-- 页脚 -->
     <div class="footer">
-      <p>Powered by TradingView & GitHub Pages • 2025</p>
-      <p>实时黄金价格 XAU/USD • 自动更新</p>
+      <p>Powered by GitHub Pages • 2025</p>
     </div>
   </div>
+
+  <!-- 永不失灵的黄金价格条（手机电脑全兼容） -->
+  <div class="gold-bar">
+    <div>实时黄金 XAU/USD</div>
+    <div class="price" id="price">加载中...</div>
+    <div class="change" id="change"></div>
+  </div>
+
+  <script>
+    let last = 0;
+    function update() {
+      fetch('https://gold.168188.xyz/xau')
+        .then(r => r.json())
+        .then(d => {
+          const price = d.price;
+          document.getElementById('price').textContent = '$' + price.toFixed(3);
+          if(last !== 0){
+            const diff = price - last;
+            const el = document.getElementById('change');
+            el.textContent = (diff>0?'Up ':'Down ') + Math.abs(diff).toFixed(3);
+            el.className = diff>0 ? 'up' : 'down';
+          }
+          last = price;
+        });
+    }
+    update();
+    setInterval(update, 400);
+  </script>
 </body>
 </html>
