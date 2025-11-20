@@ -15,7 +15,7 @@
     }
     
     .container {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     
@@ -72,96 +72,31 @@
       text-decoration: none;
     }
     
-    /* 实时价格卡片 */
-    .price-card {
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #ffd700;
-      padding: 25px;
-      border-radius: 16px;
-      text-align: center;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    
-    .price-card h3 {
-      margin: 0 0 15px 0;
-      color: #fff;
-      font-size: 1.2em;
-    }
-    
-    .price {
-      font-size: 3.5em;
-      font-weight: bold;
-      margin: 15px 0;
-      color: #ffd700;
-    }
-    
-    .change {
-      font-size: 1.5em;
-      margin: 10px 0;
-    }
-    
-    .up {
-      color: #22ab94;
-    }
-    
-    .down {
-      color: #f7525f;
-    }
-    
-    .price-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    
-    .price-info-item {
-      background: rgba(255,255,255,0.1);
-      padding: 10px;
-      border-radius: 8px;
-    }
-    
-    .price-info-label {
-      font-size: 0.85em;
-      opacity: 0.8;
-      margin-bottom: 5px;
-    }
-    
-    .price-info-value {
-      font-size: 1.1em;
-      font-weight: bold;
-    }
-    
-    /* TradingView 图表容器 */
-    .chart-section {
+    /* TradingView 市场行情容器 */
+    .market-section {
       background: #161616;
       border-radius: 16px;
-      padding: 20px;
+      padding: 30px;
       margin-bottom: 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
-    .chart-section h2 {
+    .market-section h2 {
       color: #ffd700;
-      margin: 0 0 20px 0;
+      margin: 0 0 25px 0;
       font-size: 1.5em;
-    }
-    
-    .tradingview-widget-container {
-      height: 600px;
-      position: relative;
+      text-align: center;
     }
     
     .status-badge {
       display: inline-block;
-      padding: 5px 15px;
+      padding: 6px 18px;
       border-radius: 20px;
       font-size: 0.85em;
-      margin-bottom: 10px;
-    }
-    
-    .status-live {
+      margin-bottom: 20px;
       background: #22ab94;
       color: #000;
       font-weight: bold;
@@ -171,6 +106,14 @@
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.7; }
+    }
+    
+    .tradingview-widget-container {
+      width: 100%;
+      max-width: 550px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     .footer {
@@ -188,12 +131,16 @@
         padding: 10px;
       }
       
-      .price {
-        font-size: 2.5em;
+      .header-section {
+        padding: 20px;
+      }
+      
+      .market-section {
+        padding: 20px;
       }
       
       .tradingview-widget-container {
-        height: 400px;
+        max-width: 100%;
       }
     }
   </style>
@@ -210,92 +157,115 @@
       </div>
     </div>
 
-    <!-- 实时价格卡片 -->
-    <div class="price-card">
-      <span class="status-badge status-live">● 实时数据</span>
-      <h3>黄金实时价格 XAU/USD</h3>
-      <div class="price" id="price">加载中...</div>
-      <div class="change" id="change">--</div>
-      
-      <div class="price-info">
-        <div class="price-info-item">
-          <div class="price-info-label">买入价</div>
-          <div class="price-info-value" id="bid">--</div>
-        </div>
-        <div class="price-info-item">
-          <div class="price-info-label">卖出价</div>
-          <div class="price-info-value" id="ask">--</div>
-        </div>
-        <div class="price-info-item">
-          <div class="price-info-label">日内变化</div>
-          <div class="price-info-value" id="dayChange">--</div>
-        </div>
-      </div>
-      
-      <small style="display:block;margin-top:15px;opacity:0.7;">
-        TradingView 实时数据 • 24小时自动更新
-      </small>
-    </div>
-
-    <!-- TradingView 图表 -->
-    <div class="chart-section">
-      <h2>📈 实时K线图表（全天候数据）</h2>
+    <!-- TradingView 市场行情 -->
+    <div class="market-section">
+      <span class="status-badge">● 实时数据</span>
+      <h2>🌐 全球市场实时行情</h2>
       
       <!-- TradingView Widget BEGIN -->
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+        <div class="tradingview-widget-copyright">
+          <a href="https://cn.tradingview.com/markets/" rel="noopener nofollow" target="_blank">
+            <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
         {
-          "lineWidth": 2,
-          "lineType": 0,
-          "chartType": "bars",
-          "showVolume": true,
-          "fontColor": "rgb(106, 109, 120)",
-          "gridLineColor": "rgba(242, 242, 242, 0.06)",
-          "volumeUpColor": "rgba(34, 171, 148, 0.5)",
-          "volumeDownColor": "rgba(247, 82, 95, 0.5)",
-          "backgroundColor": "#0F0F0F",
-          "widgetFontColor": "#DBDBDB",
-          "upColor": "#22ab94",
-          "downColor": "#f7525f",
-          "borderUpColor": "#22ab94",
-          "borderDownColor": "#f7525f",
-          "wickUpColor": "#22ab94",
-          "wickDownColor": "#f7525f",
           "colorTheme": "dark",
-          "isTransparent": false,
           "locale": "zh_CN",
-          "chartOnly": false,
-          "scalePosition": "right",
-          "scaleMode": "Normal",
-          "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-          "valuesTracking": "1",
-          "changeMode": "price-and-percent",
-          "symbols": [
-            ["GOLD|1D"]
-          ],
-          "dateRanges": [
-            "1d|1",
-            "1m|30",
-            "3m|60",
-            "12m|1D",
-            "60m|1W",
-            "all|1M"
-          ],
-          "fontSize": "10",
-          "headerFontSize": "medium",
-          "autosize": true,
-          "timeHoursFormat": "12-hours",
-          "width": "100%",
-          "height": "100%",
-          "noTimeScale": false,
-          "hideDateRanges": false,
-          "showMA": true,
-          "maLength": 9,
-          "maLineColor": "#2962FF",
-          "maLineWidth": 1,
-          "hideMarketStatus": false,
-          "hideSymbolLogo": false
+          "largeChartUrl": "",
+          "isTransparent": false,
+          "showSymbolLogo": false,
+          "backgroundColor": "#0F0F0F",
+          "support_host": "https://www.tradingview.com",
+          "width": 550,
+          "height": 550,
+          "symbolsGroups": [
+            {
+              "name": "Indices",
+              "symbols": [
+                {
+                  "name": "FOREXCOM:SPXUSD",
+                  "displayName": "S&P 500 Index"
+                },
+                {
+                  "name": "FOREXCOM:NSXUSD",
+                  "displayName": "US 100 Cash CFD"
+                },
+                {
+                  "name": "FOREXCOM:DJI",
+                  "displayName": "Dow Jones Industrial Average Index"
+                },
+                {
+                  "name": "INDEX:NKY",
+                  "displayName": "Japan 225"
+                },
+                {
+                  "name": "INDEX:DEU40",
+                  "displayName": "DAX Index"
+                },
+                {
+                  "name": "FOREXCOM:UKXGBP",
+                  "displayName": "FTSE 100 Index"
+                }
+              ]
+            },
+            {
+              "name": "Futures",
+              "symbols": [
+                {
+                  "name": "BMFBOVESPA:ISP1!",
+                  "displayName": "S&P 500"
+                },
+                {
+                  "name": "BMFBOVESPA:EUR1!",
+                  "displayName": "Euro"
+                },
+                {
+                  "name": "CMCMARKETS:GOLD",
+                  "displayName": "Gold"
+                },
+                {
+                  "name": "PYTH:WTI3!",
+                  "displayName": "WTI Crude Oil"
+                },
+                {
+                  "name": "BMFBOVESPA:CCM1!",
+                  "displayName": "Corn"
+                }
+              ]
+            },
+            {
+              "name": "Forex",
+              "symbols": [
+                {
+                  "name": "FX:EURUSD",
+                  "displayName": "EUR to USD"
+                },
+                {
+                  "name": "FX:GBPUSD",
+                  "displayName": "GBP to USD"
+                },
+                {
+                  "name": "FX:USDJPY",
+                  "displayName": "USD to JPY"
+                },
+                {
+                  "name": "FX:USDCHF",
+                  "displayName": "USD to CHF"
+                },
+                {
+                  "name": "FX:AUDUSD",
+                  "displayName": "AUD to USD"
+                },
+                {
+                  "name": "FX:USDCAD",
+                  "displayName": "USD to CAD"
+                }
+              ]
+            }
+          ]
         }
         </script>
       </div>
@@ -305,61 +275,16 @@
     <!-- 页脚 -->
     <div class="footer">
       <p>Powered by TradingView & GitHub Pages • 2025</p>
-      <p>数据更新频率：实时推送 • 24小时不间断</p>
+      <p>实时市场数据 • 24小时不间断 • 包含黄金、股指、外汇等品种</p>
     </div>
   </div>
 
   <script>
-    // 从 TradingView widget 获取实时价格数据并更新顶部卡片
-    // 注意：这是简化版本，真实数据来自 TradingView 的 iframe
-    
-    let lastPrice = 0;
-    
-    // 监听来自 TradingView iframe 的消息
-    window.addEventListener('message', function(event) {
-      // TradingView 会发送价格更新消息
-      if (event.data && event.data.name === 'tv-widget-ready') {
-        console.log('✅ TradingView widget 已就绪');
-      }
-    });
-    
-    // 使用 TradingView 的 Websocket API 获取实时价格（可选）
-    // 这里提供一个备用方案：通过定期检查图表来更新价格
-    function updatePriceDisplay() {
-      // 这里可以集成你之前的 Finnhub 或其他 WebSocket API
-      // 作为补充显示在顶部的价格卡片中
-      
-      // 示例：使用 Finnhub WebSocket（需要替换 API_KEY）
-      // const ws = new WebSocket('wss://ws.finnhub.io?token=YOUR_API_KEY');
-      // ws.onmessage = (event) => {
-      //   const data = JSON.parse(event.data);
-      //   if (data.type === 'trade') {
-      //     updatePriceCard(data.data[0].p);
-      //   }
-      // };
-    }
-    
-    function updatePriceCard(price) {
-      const priceEl = document.getElementById('price');
-      const changeEl = document.getElementById('change');
-      
-      priceEl.textContent = '$' + price.toFixed(2);
-      
-      if (lastPrice !== 0) {
-        const diff = price - lastPrice;
-        const percent = ((diff / lastPrice) * 100).toFixed(2);
-        changeEl.textContent = (diff > 0 ? '↑ +' : '↓ ') + diff.toFixed(2) + 
-                               ' (' + (diff > 0 ? '+' : '') + percent + '%)';
-        changeEl.className = 'change ' + (diff > 0 ? 'up' : 'down');
-      }
-      
-      lastPrice = price;
-    }
-    
     // 页面加载完成提示
     window.addEventListener('load', function() {
       console.log('📊 XAUUSD 回测系统已加载');
-      console.log('💡 TradingView 图表提供24小时实时数据');
+      console.log('💡 TradingView 提供实时市场数据');
+      console.log('📈 包含黄金(Gold)在 Futures 分类中');
     });
   </script>
 </body>
